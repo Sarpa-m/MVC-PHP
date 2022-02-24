@@ -1,0 +1,13 @@
+{
+    "name": "sarpa/mvc",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [{
+        "name": "Maurício Sarpa",
+        "email": "mausarpa02@gmai.com"
+    }],
+    "require": {}
+}
