@@ -1,0 +1,6 @@
+SetEnv URL http://localhost/MVC
+
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ ./index.php [QSA,NC]
