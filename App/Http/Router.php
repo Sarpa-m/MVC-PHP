@@ -5,7 +5,7 @@ namespace App\Http;
 use  App\Http\Request;
 use Exception;
 
-class Rauter
+class Router
 {
 
     /**
@@ -44,7 +44,7 @@ class Rauter
      */
     public function __construct($url)
     {
-        $this->request = new Request;
+        $this->request = new Request($this);
         $this->url     = $url;
         $this->serPrefix();
     }
@@ -187,6 +187,11 @@ class Rauter
         throw new Exception("URL não encontrada ", 404);
     }
 
+    /**
+     * run
+     *
+     * @return Response
+     */
     public function run()
     {
 
@@ -216,5 +221,15 @@ class Rauter
         } catch (\Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }
+    }
+    
+    /**
+     * Método responsavel por retarnar a URL atual
+     *
+     * @return string
+     */
+    public function getcurrentUrl()
+    {
+        return $this->url . $this->getUri();
     }
 }

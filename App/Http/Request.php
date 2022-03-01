@@ -2,61 +2,81 @@
 
 namespace App\Http;
 
+use App\Http\Router;
+
 class Request
 {
 
+    /**
+     * intacia de router
+     *
+     * @var Router
+     */
+    private $router;
     /**
      * Método Http da requisição
      *
      * @var mixed
      */
     private $httpMethod;
-
     /**
      * URI da pagina (rota)
      *
      * @var mixed
      */
     private $uri;
-
     /**
      * Parâmetros da URL ($_GET) 
      *
      * @var mixed
      */
     private $queyParams = [];
-
     /**
      * Variáves do POST da pagina ($_POST)
      *
      * @var mixed
      */
     private $postVars = [];
-
     /**
      * Cabesolha da requisição
      *
      * @var array
      */
     private $headers = [];
-
     /**
      * Cookie da pagina 
      *
      * @var array
      */
     private  $cookie = [];
-
-    public function __construct()
+    public function __construct($router)
     {
+        $this->router = $router;
         $this->queyParams = $_GET ?? [];
         $this->postVars = $_POST ?? [];
         $this->headers = getallheaders();
         $this->cookie = $_COOKIE ?? [];
         $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? '';
-        $this->uri = $_SERVER['REQUEST_URI'] ?? '';
+        $this->setUri();
     }
-
+    /**
+     * Método responsavel por definir a URI
+     *
+     * @return void
+     */
+    private function setUri()
+    {
+        $this->uri = explode("?", ($_SERVER['REQUEST_URI'] ?? ''))[0];
+    }
+    /**
+     * Método resposaver por retornar a intacia de Router
+     *
+     * @return Router
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
     /**
      * Método responsavel por retornar o método HTTP da requisição
      *
@@ -87,7 +107,7 @@ class Request
     /**
      * Método responsavel por retornar os queyParams da requisição
      *
-     * @return string
+     * @return array
      */
     public function getQueyParams()
     {

@@ -1,6 +1,6 @@
-SetEnv URL http://localhost/MVC
 
-
+SetEnv TZ America/Sao_Paulo
+php_value date.timezone America/Sao_Paulo
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ ./index.php [QSA,NC]

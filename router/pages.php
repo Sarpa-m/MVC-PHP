@@ -1,20 +1,20 @@
 <?php
 
 use App\Controller\Pages;
-use App\Http\Rauter;
+use App\Http\Router;
 use App\Http\Response;
 
-//inicia o rauter
-$obRauter = new Rauter(URL);
+//inicia o router
+$obRouter = new Router(URL);
 //Rota de HOME
-$obRauter->get('/', [
+$obRouter->get('/', [
 
     function () {
         return new Response(200, Pages\Home::getHome());
     }
 ]);
 
-$obRauter->get('/sobre', [
+$obRouter->get('/sobre', [
 
     function () {
         return new Response(200, Pages\Sobre::getSobre());
@@ -22,9 +22,16 @@ $obRauter->get('/sobre', [
 ]);
 
 
-$obRauter->get('/pagina/{idpagina}/{iu}', [
+$obRouter->get('/depoimeto', [
 
-    function ($idpagina,$iu,) {
-        return new Response(200, "oi $idpagina <hr> $iu");
+    function ($request) {
+        return new Response(200, Pages\Testimony::getTestimony($request));
+    }
+]);
+
+$obRouter->post('/depoimeto', [
+
+    function ($request) {
+        return new Response(200, Pages\Testimony::insertTestimony($request));
     }
 ]);

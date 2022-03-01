@@ -5,9 +5,14 @@
             "App\\": "app/"
         }
     },
-    "authors": [{
-        "name": "Maurício Sarpa",
-        "email": "mausarpa02@gmai.com"
-    }],
-    "require": {}
+    "authors": [
+        {
+            "name": "Maurício Sarpa",
+            "email": "mausarpa02@gmai.com"
+        }
+    ],
+    "require": {
+        "william-costa/dot-env": "^0.1.0",
+        "william-costa/database-manager": "^0.1.0"
+    }
 }
