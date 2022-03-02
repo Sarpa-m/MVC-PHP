@@ -66,7 +66,10 @@ class Request
      */
     private function setUri()
     {
-        $this->uri = explode("?", ($_SERVER['REQUEST_URI'] ?? ''))[0];
+        $uri = explode("?", ($_SERVER['REQUEST_URI'] ?? ''))[0];
+        $uri = preg_replace('#/$#', '', $uri);
+        $uri .= "/";
+        $this->uri = $uri;
     }
     /**
      * Método resposaver por retornar a intacia de Router

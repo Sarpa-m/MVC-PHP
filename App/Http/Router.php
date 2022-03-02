@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Queue as MiddlewareQueue;
 use  App\Http\Request;
 use Exception;
 
@@ -49,6 +50,17 @@ class Router
         $this->serPrefix();
     }
 
+
+    public function setRoutes($class, $obRouter)
+    {
+        foreach ($class as $value) {
+            $value::init($obRouter);
+        }
+    }
+
+
+
+
     private function serPrefix()
     {
         //INFORMAÇOES DA URL ATUAL
@@ -65,8 +77,11 @@ class Router
      */
     private function addRout($method, $route, $params = [])
     {
-        //VALIDAÇÃO DOS PARAMETROS
+        //FORÇA A TER "/" NO FINAL DA ROTA
+        $route = preg_replace('#/$#', '', $route) . "/";
 
+
+        //VALIDAÇÃO DOS PARAMETROS
         foreach ($params as $key => $value) {
             if ($value instanceof \Closure) {
                 $params["controller"] = $value;
@@ -74,6 +89,9 @@ class Router
                 continue;
             }
         }
+
+        //MIDDLESWARES DA ROTA
+        $params['middlewares'] = $params['middlewares'] ?? [];
 
         //Variaves da rota
         $params["variables"] = [];
@@ -212,17 +230,26 @@ class Router
 
             //REFLECTION
             $reflection = new \ReflectionFunction($route['controller']);
+
             foreach ($reflection->getParameters() as $parameter) {
+
                 $name = $parameter->getName();
                 $args[$name] = $route['variables'][$name] ?? '';
             }
 
-            return  call_user_func_array($route['controller'], $args);
+
+
+            //RETORNA A EXCUÇÃO DA FILA DE MIDDLEWARES
+            return (new MiddlewareQueue(
+                $route['middlewares'],
+                $route['controller'],
+                $args
+            ))->next($this->request);
         } catch (\Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }
     }
-    
+
     /**
      * Método responsavel por retarnar a URL atual
      *
