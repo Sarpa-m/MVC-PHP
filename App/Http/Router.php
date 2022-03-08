@@ -257,6 +257,17 @@ class Router
      */
     public function getcurrentUrl()
     {
-        return $this->url . $this->getUri();
+        $URLc = $this->url . $this->getUri() ;
+
+        return preg_replace('#/$#', '', $URLc);
+    }
+
+    public function redirect($URL){
+        //URL
+       
+
+        //EXECUTA O REDIRECT
+        header('location: '.$URL);
+        exit;
     }
 }

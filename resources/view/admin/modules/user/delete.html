@@ -1,0 +1,26 @@
+<h1>Remover usúario</h1>
+
+<hr>
+<a href="{{URL}}/admin/user/">
+    <button type="button" class="btn btn-warning">Voltar</button>
+</a>
+
+<hr>
+
+<form  method="post">
+ <h3>Voce realmete deseja remover este usúario do painel?</h3>
+
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" name="nome" id="nome" class="form-control" value="{{nome}}" disabled>
+
+    </div>
+    <div class="form-group my-3">
+        <label for="email">E-mail</label>
+        <input type="email" name="email" id="email" class="form-control" value="{{email}}" disabled>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger ">Remover</button>
+    </div>
+
+</form>

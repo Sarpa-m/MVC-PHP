@@ -1,0 +1,26 @@
+<h1>Excluir depoimento</h1>
+
+<hr>
+<a href="{{URL}}/admin/testimonies/">
+    <button type="button" class="btn btn-warning">Voltar</button>
+</a>
+
+<hr>
+
+<form  method="post">
+ <h3>Voce realmete deseja excluir o depoimeto a baixo?</h3>
+
+    <div class="form-group">
+        <label for="nome">Autor</label>
+        <input type="text" name="nome" id="nome" class="form-control" value="{{nome}}" disabled required>
+
+    </div>
+    <div class="form-group my-3">
+        <label for="mensagem">Mensagem</label>
+        <textarea type="text" name="mensagem" id="mensagem" class="form-control"  rows="5"disabled required>{{mensagem}}</textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger ">Excluir</button>
+    </div>
+
+</form>

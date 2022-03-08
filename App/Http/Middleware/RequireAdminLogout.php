@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Session\Admin\Login as SessionAdminLogin;
 use App\Http\Request;
 
 
-class Mentenance
+class RequireAdminLogout
 {
-
     /**
      * Método responsavel por executar o Middleware
      *
@@ -18,11 +18,10 @@ class Mentenance
     public function handle($request, $next)
     {
 
-        if (getenv("Mentenance") == "true") {
-            throw new \Exception('PÁGINA EM MANUTEMÇÃO', 200);
-            
+        if (SessionAdminLogin::isLogged()) {
+            $request->getRouter()->redirect(URL . '/admin');
         }
-        //EXCUTA O PROXIMO Middleware   
+        //CONTINUA A EXECUÇÃO
         return $next($request);
     }
 }

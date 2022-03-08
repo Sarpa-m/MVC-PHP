@@ -8,11 +8,17 @@ class Request
 {
 
     /**
-     * intacia de router
+     * Parâmetros da URL ($_GET) 
      *
-     * @var Router
+     * @var mixed
      */
-    private $router;
+    private $queyParams = [];
+    /**
+     * Variáves do POST da pagina ($_POST)
+     *
+     * @var mixed
+     */
+    private $postVars = [];
     /**
      * Método Http da requisição
      *
@@ -26,18 +32,6 @@ class Request
      */
     private $uri;
     /**
-     * Parâmetros da URL ($_GET) 
-     *
-     * @var mixed
-     */
-    private $queyParams = [];
-    /**
-     * Variáves do POST da pagina ($_POST)
-     *
-     * @var mixed
-     */
-    private $postVars = [];
-    /**
      * Cabesolha da requisição
      *
      * @var array
@@ -49,15 +43,22 @@ class Request
      * @var array
      */
     private  $cookie = [];
+    /**
+     * intacia de router
+     *
+     * @var Router
+     */
+    private $router;
+
     public function __construct($router)
     {
-        $this->router = $router;
         $this->queyParams = $_GET ?? [];
         $this->postVars = $_POST ?? [];
         $this->headers = getallheaders();
         $this->cookie = $_COOKIE ?? [];
         $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? '';
         $this->setUri();
+        $this->router = $router;
     }
     /**
      * Método responsavel por definir a URI

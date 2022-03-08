@@ -33,7 +33,8 @@ class View
         if (file_exists($file)) {
             return file_get_contents($file);
         } else {
-            die("caminho da view invalido <br>resources/view/$view.html");
+            throw new \Exception("caminho da view invalido <br>resources/view/$view.html",500);
+            ;
         }
     }
 
@@ -59,10 +60,11 @@ class View
 
         $values = array_values($vars);
 
-        $view = str_replace($keys, $values, $contentView);
+        
+        $contentView = str_replace($keys, $values, $contentView);
 
 
         //RETORNA O CONTEUDO RENDERIZADO
-        return str_replace($keys, $values, $view);
+        return str_replace($keys, $values, $contentView);
     }
 }

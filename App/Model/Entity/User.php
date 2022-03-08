@@ -1,38 +1,49 @@
 <?php
 
+
 namespace App\Model\Entity;
 
 use WilliamCosta\DatabaseManager\Database;
 
-class Testimony
+class User
 {
     /**
-     * ID do depoimento
+     * Id do Usuario
      *
      * @var int
      */
     public $id;
 
     /**
-     * Nome da usuário que fez o depoimento
+     * Nome do Usuario
      *
      * @var string
      */
     public $nome;
 
     /**
-     * Mesagem do depoimento
+     * E-mail da Usuario 
      *
      * @var string
      */
-    public $mensagem;
+    public $email;
 
     /**
-     * Data de puclicação do depoimento
+     * senha do Usuario
      *
      * @var string
      */
-    public $data;
+    public $senha;
+    /**
+     * Método responsavel por retornar usuario apartir do email
+     *
+     * @param string $email
+     * @return User
+     */
+    public static function getUserByEmail($email)
+    {
+        return (new Database('usuarios'))->select('email ="' . $email . '"')->fetchObject(self::class);
+    }
 
     /**
      * Metodoresponsavel por cadastrar a instancia atual no banca de dados
@@ -41,20 +52,19 @@ class Testimony
      */
     public function cadastrar()
     {
-        //define a data 
-        $this->data = date("y-m-d h:i:s");
 
-        $this->id = (new Database('depoimentos'))->insert([
+
+        $this->id = (new Database('usuarios'))->insert([
             "nome" => $this->nome,
-            "mensagem" => $this->mensagem,
-            "data" => $this->data
+            "email" => $this->email,
+            "senha" => $this->senha
         ]);
 
         return true;
     }
 
     /**
-     * Método responsavel por retornar Depoimetos
+     * Método responsavel por retornar um Usuario
      *
      * @param  string $whwrw
      * @param  string $order
@@ -62,20 +72,20 @@ class Testimony
      * @param  string $field
      * @return \PDOStatement
      */
-    public static function getTestimonies($where = null, $order = null, $limit = null, $fields = "*")
+    public static function getUsers($where = null, $order = null, $limit = null, $fields = "*")
     {
-        return (new Database('depoimentos'))->select($where, $order, $limit, $fields);
+        return (new Database('usuarios'))->select($where, $order, $limit, $fields);
     }
 
     /**
      * Método responsavel por retornar um depoimento com base no seu ID
      *
      * @param integer $id
-     * @return Testimony
+     * @return User
      */
-    public static function getTestimonyById($id)
+    public static function getUserById($id)
     {
-        return self::getTestimonies("id = $id")->fetchObject(self::class);
+        return self::getUsers("id = $id")->fetchObject(self::class);
     }
     /**
      * Método responsavel por atualizar os dados do banco com a intancia atual
@@ -86,9 +96,10 @@ class Testimony
     {
 
         //ATUALIZA OS DADOS NO BANCO
-        return (new Database('depoimentos'))->update("id = " . $this->id, [
+        return (new Database('usuarios'))->update("id = " . $this->id, [
             "nome" => $this->nome,
-            "mensagem" => $this->mensagem,
+            "email" => $this->email,
+            "senha" => $this->senha
         ]);
     }
 
@@ -101,6 +112,6 @@ class Testimony
     {
 
         //APAGAR OS DADOS NA BANCO
-        return (new Database('depoimentos'))->delete("id = " . $this->id);
+        return (new Database('usuarios'))->delete("id = " . $this->id);
     }
 }
