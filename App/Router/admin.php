@@ -3,7 +3,6 @@
 namespace App\Router;
 
 use App\Controller\Admin as ControllerAdmin;
-use App\Controller\Pages as ControllerPages;
 use App\Http\Response;
 use App\Http\Router;
 use App\Router\admin as RouterAdmin;
