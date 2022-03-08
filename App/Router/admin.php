@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Router;
+namespace App\Router;
 
 use App\Controller\Admin as ControllerAdmin;
 use App\Controller\Pages as ControllerPages;
 use App\Http\Response;
 use App\Http\Router;
+use App\Router\admin as RouterAdmin;
 
 class admin
 {
@@ -26,23 +27,19 @@ class admin
      */
     public static function  init($obRouter, $preUlr = null)
     {
+        $obRouter->setRoutes([
+            RouterAdmin\login::class,
+            RouterAdmin\testimonies::class,
+            RouterAdmin\user::class,
+        ], $obRouter);
+
         $obRouter->get(self::$preUlr . '/', [
             //MIDDLEWARES DA ROTA
-            'middlewares' => [],
-            //FUNÇÃO ANONIMA PARA CHAMAR CONTROLER
+            'middlewares' => ['required-admin-login'],
 
+            //CHAMAR CONTROLER
             function ($request) {
-                return new Response(200, ControllerAdmin\Home::getHome());
-            }
-        ]);
-
-        $obRouter->get(self::$preUlr . '/login', [
-            //MIDDLEWARES DA ROTA
-            'middlewares' => [],
-            //FUNÇÃO ANONIMA PARA CHAMAR CONTROLER
-
-            function ($request) {
-                return new Response(200, ControllerAdmin\Login::getLogin());
+                return new Response(200, ControllerAdmin\Home::getHome($request));
             }
         ]);
     }

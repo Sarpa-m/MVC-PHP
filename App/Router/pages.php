@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Router;
+namespace App\Router;
+
 
 use App\Controller\Pages as ControllerPages;
 use App\Http\Response;
