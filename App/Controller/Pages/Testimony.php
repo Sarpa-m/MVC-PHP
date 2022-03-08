@@ -20,8 +20,7 @@ class Testimony extends Page
 
         $content =  View::render('pages/testimony', [
 
-          /*   "textarea" => file_get_contents("https://baconipsum.com/api/?type=meat-and-filler&paras=1&format=text"),
-            'nomeForms' => str_replace(['["', '"]'], "", file_get_contents("https://gerador-nomes.herokuapp.com/nomes/1")), */
+         
             'item' => self::getTestimonyItems($request, $obPagination),
             'Pagination' => parent::getPagination($request, $obPagination)
 

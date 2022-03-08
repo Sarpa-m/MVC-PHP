@@ -15,6 +15,10 @@ class Page
      */
     public static function getPage($title, $content)
     {
+        if (is_array($content)) {
+            $content = implode("", $content);
+        }
+
         return View::render('page', [
             "title" => $title,
             "content" => $content,
@@ -86,14 +90,44 @@ class Page
                 'link' => $link,
                 'active' => ($page['current'] == 1) ? 'active' : ''
             ]);
-            
         }
 
-       
+
         //REDENRIZA BOX DE PAGINAÇÃO
 
         return View::render('pagination/box', [
             'links' => $links
         ]);
     }
+
+
+    /**
+     * Metodo responsavel por retornar uma mesagem de sucesso
+     * @param  string $mensagem
+     * @return string
+     */
+    public static function getAlertSuccess($mensagem)
+    {
+
+        return View::render("alert", [
+            'tipo' => "success",
+            'mensages' => $mensagem
+        ]);
+    }
+
+    /**
+     * Metodo responsavel por retornar uma mesagem de erro
+     * @param  string $mensagem
+     * @return string
+     */
+    public static function getAlertError($mensagem)
+    {
+
+        return View::render("alert", [
+            'tipo' => "error",
+            'mensages' => $mensagem
+        ]);
+    }
+
+
 }
