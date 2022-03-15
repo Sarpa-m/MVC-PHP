@@ -25,12 +25,23 @@ class api
     public static function  init($obRouter)
     {
         $obRouter->setRoutes([
-            RouterApi\v1\testimonies::class
+            RouterApi\v1\testimonies::class,
+            RouterApi\v1\auth::class
         ], $obRouter);
 
         $obRouter->get(self::$preUlr . '/v1', [
             //MIDDLEWARES DA ROTA
             'middlewares' => ['api'],
+
+            //CHAMAR CONTROLER
+            function ($request) {
+                return new Response(200, ControllerApi::getDetails($request), 'application/json');
+            }
+        ]);
+
+        $obRouter->get(self::$preUlr . '/v1/user/me', [
+            //MIDDLEWARES DA ROT
+            'middlewares' => ['api','JWT-auth'],
 
             //CHAMAR CONTROLER
             function ($request) {

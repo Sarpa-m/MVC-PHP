@@ -43,4 +43,6 @@ class Api
             "quantidadeDePaginas" => !empty($pages) ? count($pages) : 2,
         ];
     }
+
+    
 }

@@ -48,6 +48,7 @@ MiddlewareQueue::setMap([
     'required-admin-login'  => Middleware\RequireAdminlogin::class,
     'api'                   => Middleware\Api::class,
     'user-basic-auth'       => Middleware\UserBasicAuth::class,
+    'JWT-auth'         => Middleware\JWTAuth::class,
 ]);
 
 //DEFINE OS MIDDLEWARES PADOES PARA TODAS AS ROTAS
