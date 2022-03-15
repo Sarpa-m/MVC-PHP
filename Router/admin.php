@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Router;
+namespace Router;
 
 use App\Controller\Admin as ControllerAdmin;
 use App\Http\Response;
 use App\Http\Router;
-use App\Router\admin as RouterAdmin;
+use Router\admin as RouterAdmin;
 
 class admin
 {

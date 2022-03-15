@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Router;
+namespace Router;
 
 
 use App\Controller\Pages as ControllerPages;
@@ -9,7 +9,7 @@ use App\Http\Router;
 
 class pages
 {
-    
+
     /**
      * Pre URL da rota
      *

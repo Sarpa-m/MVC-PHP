@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Router\admin;
+namespace Router\admin;
 
 use App\Controller\Admin as ControllerAdmin;
 use App\Controller\Pages as ControllerPages;
