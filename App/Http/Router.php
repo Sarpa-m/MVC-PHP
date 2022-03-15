@@ -8,35 +8,36 @@ use Exception;
 
 class Router
 {
-
     /**
      * URL completa do projeto
      *
      * @var string
      */
     private $url = "";
-
     /**
      * Prefixo de todoas as rotas 
      *
      * @var string
      */
     private $prefix = '';
-
     /**
      * Índice das rotas
      *
      * @var array
      */
     private $routes = [];
-
     /**
      * Instancia de Request
      *
      * @var Request
      */
     private $request;
-
+    /**
+     * Content type padrão do response
+     *
+     * @var string
+     */
+    private $contentType = 'text/html';
     /**
      * Método responsavel por definir a classe
      *
@@ -49,18 +50,30 @@ class Router
         $this->url     = $url;
         $this->serPrefix();
     }
-
-
+    /**
+     * Método responsavel por alterar o valor do contenty Type
+     * @param strinf $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+    }
+    /**
+     * Metodo responsaverl por configurar as rotas
+     *
+     * @param array $class
+     * @param Router $obRouter
+     * @return void
+     */
     public function setRoutes($class, $obRouter)
     {
         foreach ($class as $value) {
-            $value::init($obRouter);
+           $value::init($obRouter);
         }
     }
-
-
-
-
+    /**
+     * Método resposavel por definir o prefixo da rota
+     */
     private function serPrefix()
     {
         //INFORMAÇOES DA URL ATUAL
@@ -99,7 +112,7 @@ class Router
         //PADRÃO DE VARIAVES DAS ROTAS
         $patternVariables = "/{(.*?)}/";
         if (preg_match_all($patternVariables, $route, $matches)) {
-            $route = preg_replace($patternVariables, "(.*?)", $route);
+            $route               = preg_replace($patternVariables, "(.*?)", $route);
             $params["variables"] = $matches[1];
         }
 
@@ -111,7 +124,6 @@ class Router
 
         $this->routes[$patternRoute][$method] = $params;
     }
-
     /**
      * Método resposavel por definir uma rota de GET
      * @param  string $route
@@ -148,7 +160,6 @@ class Router
     {
         return $this->addRout("DELETE", $route, $params);
     }
-
     /**
      * Método responsavel por retotnar a uri desconsiderando o prefixo
      *
@@ -163,7 +174,6 @@ class Router
         //retorna a uri sem prefixo 
         return end($xUri);
     }
-
     /**
      * Método responsavel por retornar os dados da rota atual
      *
@@ -190,7 +200,7 @@ class Router
                     //CHAVES
                     $keys = $method[$httpMethod]['variables'];
 
-                    $method[$httpMethod]['variables'] = array_combine($keys, $matches);
+                    $method[$httpMethod]['variables']            = array_combine($keys, $matches);
                     $method[$httpMethod]['variables']["request"] = $this->request;
 
 
@@ -204,9 +214,8 @@ class Router
         // URL não encontrada 
         throw new Exception("URL não encontrada ", 404);
     }
-
     /**
-     * run
+     * Método resporaser por executar a rota
      *
      * @return Response
      */
@@ -214,11 +223,8 @@ class Router
     {
 
         try {
-
             //OBITEM A ROTA ATUAL
             $route = $this->getRoute();
-
-
 
             //Verifica o controlador
             if (!isset($route['controller'])) {
@@ -237,8 +243,6 @@ class Router
                 $args[$name] = $route['variables'][$name] ?? '';
             }
 
-
-
             //RETORNA A EXCUÇÃO DA FILA DE MIDDLEWARES
             return (new MiddlewareQueue(
                 $route['middlewares'],
@@ -246,10 +250,29 @@ class Router
                 $args
             ))->next($this->request);
         } catch (\Exception $e) {
-            return new Response($e->getCode(), $e->getMessage());
+            return new Response($e->getCode(), $this->getErrorMenssage($e->getMessage()), $this->contentType);
         }
     }
+    /**
+     * Métod responsavel por retornar a mensagem de erro de acordo com o content type
+     *
+     * @param string $mensagem
+     * @return mixed
+     */
+    private function getErrorMenssage($mensagem)
+    {
+        switch ($this->contentType) {
+            case 'application/json':
+                return [
+                    'error' => $mensagem
+                ];
+                break;
 
+            default:
+                return $mensagem;
+                break;
+        }
+    }
     /**
      * Método responsavel por retarnar a URL atual
      *
@@ -257,17 +280,17 @@ class Router
      */
     public function getcurrentUrl()
     {
-        $URLc = $this->url . $this->getUri() ;
+        $URLc = $this->url . $this->getUri();
 
         return preg_replace('#/$#', '', $URLc);
     }
-
-    public function redirect($URL){
+    public function redirect($URL)
+    {
         //URL
-       
+
 
         //EXECUTA O REDIRECT
-        header('location: '.$URL);
+        header('location: ' . $URL);
         exit;
     }
 }

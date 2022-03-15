@@ -6,29 +6,28 @@ use App\Http\Router;
 
 class Request
 {
-
     /**
      * Parâmetros da URL ($_GET) 
      *
-     * @var mixed
+     * @var array
      */
     private $queyParams = [];
     /**
      * Variáves do POST da pagina ($_POST)
      *
-     * @var mixed
+     * @var array
      */
     private $postVars = [];
     /**
      * Método Http da requisição
      *
-     * @var mixed
+     * @var string
      */
     private $httpMethod;
     /**
      * URI da pagina (rota)
      *
-     * @var mixed
+     * @var string
      */
     private $uri;
     /**
@@ -49,16 +48,35 @@ class Request
      * @var Router
      */
     private $router;
-
+    /**
+     * contrutor da classe
+     *
+     * @param Router $router
+     */
     public function __construct($router)
     {
         $this->queyParams = $_GET ?? [];
-        $this->postVars = $_POST ?? [];
+        $this->setPostVars();
         $this->headers = getallheaders();
         $this->cookie = $_COOKIE ?? [];
         $this->httpMethod = $_SERVER['REQUEST_METHOD'] ?? '';
         $this->setUri();
         $this->router = $router;
+    }
+    private function setPostVars()
+    {
+        //VERIFICA O METODO DE REQUISIÇÃO
+        if ($this->httpMethod == "GET") {
+            return false;
+        }
+
+        //POST PADRÃO
+        $this->postVars = $_POST ?? [];
+
+        //POST JSON 
+        $inputRaw = file_get_contents('php://input');
+   
+        $this->postVars = (strlen($inputRaw) && empty($_POST))? json_decode($inputRaw,true) : $this->postVars;
     }
     /**
      * Método responsavel por definir a URI

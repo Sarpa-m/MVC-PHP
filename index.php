@@ -3,13 +3,12 @@ require_once __DIR__ . "/vendor/autoload.php";
 //CARRAA AS VARIAVES DE AMBIENTE
 WilliamCosta\DotEnv\Environment::load(__DIR__);
 
-use App\Router;
-use App\Http\Middleware;
-use App\Http\Middleware\Queue as MiddlewareQueue;
-use App\Http\Router as HttpRouter;
-use App\Utils\View;
-use WilliamCosta\DatabaseManager\Database;
 
+use App\Utils\View;
+use App\Http\Middleware;
+use App\Http\Router as HttpRouter;
+use WilliamCosta\DatabaseManager\Database;
+use App\Http\Middleware\Queue as MiddlewareQueue;
 
 //DEFINE A URL BASE DO PROJETO
 define("URL", getenv("URL"));
@@ -24,6 +23,7 @@ define('URLc', $obRouter->getcurrentUrl());
 $obRouter->setRoutes([
     Router\pages::class,
     Router\admin::class,
+    Router\api::class,
 ], $obRouter);
 
 //CONFIGURA O BANCO DE DADOS
@@ -43,9 +43,11 @@ View::init([
 
 //MAPEIA OS MIDDLEWARE
 MiddlewareQueue::setMap([
-    'mentenance' => Middleware\Mentenance::class,
+    'mentenance'            => Middleware\Mentenance::class,
     'required-admin-logout' => Middleware\RequireAdminLogout::class,
-    'required-admin-login' => Middleware\RequireAdminlogin::class,
+    'required-admin-login'  => Middleware\RequireAdminlogin::class,
+    'api'                   => Middleware\Api::class,
+    'user-basic-auth'       => Middleware\UserBasicAuth::class,
 ]);
 
 //DEFINE OS MIDDLEWARES PADOES PARA TODAS AS ROTAS
