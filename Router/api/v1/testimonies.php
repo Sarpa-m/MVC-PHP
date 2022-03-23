@@ -25,7 +25,7 @@ class testimonies
     {
         $obRouter->get(self::$preUlr . '/testimonies', [
             //MIDDLEWARES DA ROTA
-            'middlewares' => ['api'],
+            'middlewares' => ['api','cache'],
 
             //CHAMAR CONTROLER
             function ($request) {

@@ -165,7 +165,7 @@ class Router
      *
      * @return string
      */
-    private function getUri()
+    public function getUri()
     {
         $uri = $this->request->getUri();
         //fatia a uri com o prefixo 

@@ -37,7 +37,7 @@ Database::config(
 
 //DEFINE O VALOR PADÃO DAS VARIAVES DA VIEW
 View::init([
-    "URL" => URL,
+    "URL"  => URL,
     'URLc' => URLc
 ]);
 
@@ -48,14 +48,14 @@ MiddlewareQueue::setMap([
     'required-admin-login'  => Middleware\RequireAdminlogin::class,
     'api'                   => Middleware\Api::class,
     'user-basic-auth'       => Middleware\UserBasicAuth::class,
-    'JWT-auth'         => Middleware\JWTAuth::class,
+    'JWT-auth'              => Middleware\JWTAuth::class,
+    'cache'                 => Middleware\Cache::class,
 ]);
 
 //DEFINE OS MIDDLEWARES PADOES PARA TODAS AS ROTAS
 MiddlewareQueue::setDefault([
     'mentenance'
 ]);
-
 
 
 //EXECUTA E INFRUME A ROTA
